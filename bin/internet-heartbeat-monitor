@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -Eaeuo pipefail
+
+# See http://stackoverflow.com/questions/18215973
+# and http://apple.stackexchange.com/questions/57412
+
+if [ "$EUID" -ne 0 ]
+  then echo "Oops! Please run $(basename $0) as root!"
+  exit
+fi
+
+poll_interval_in_seconds=15
+
+site="opendns.com"
+
+message="Failed to ping ${site}"
+
+title="The Intertube Is Clogged"
+
+echo "Repeatedly pinging ${site}...";
+
+while [ 1 ]
+do
+      ((sudo ping -c 1 ${site} \
+      &> /dev/null \
+      && echo -n ".") \
+      || (echo -n "E" && \
+      sudo osascript -e "display notification \"${message}\" with title \"${title}\""))
+
+      sleep ${poll_interval_in_seconds}
+done
