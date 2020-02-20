@@ -1,6 +1,6 @@
 # internet-heartbeat-monitor
 
-_Mac-only._
+_Mac-only due to the dependency on `osascript`._
 
 Periodically confirm that the computer can make a successful Web
 request to the Internet.
